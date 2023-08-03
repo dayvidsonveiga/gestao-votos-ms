@@ -1,1 +1,10 @@
-
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+  datasource:
+    url: jdbc:mysql://localhost:3306/eleicao
+    username: root
+    password:
