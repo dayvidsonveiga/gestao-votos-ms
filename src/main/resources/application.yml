@@ -8,3 +8,9 @@ spring:
     url: jdbc:mysql://localhost:3306/eleicao
     username: root
     password:
+
+spring-doc:
+  swagger-ui:
+    path: /
+    tagsSorter: alpha
+    operationsSorter: method

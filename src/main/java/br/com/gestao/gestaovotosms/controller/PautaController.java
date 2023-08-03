@@ -1,5 +1,6 @@
 package br.com.gestao.gestaovotosms.controller;
 
+import br.com.gestao.gestaovotosms.contract.PautaContract;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoAbrirSessao;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoCriarPauta;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoRealizarVoto;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
 @RestController
 @Validated
 @RequiredArgsConstructor
-public class PautaController {
+public class PautaController implements PautaContract {
 
     private final PautaService pautaService;
 
@@ -32,14 +33,14 @@ public class PautaController {
     public ResponseEntity<DtoAbrirSessao> abrirSessao(@RequestBody
                                                       @Valid DtoAbrirSessao dtoAbrirSessao) {
         var response = pautaService.abrirSessao(dtoAbrirSessao);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/v1/pauta/votar")
     public ResponseEntity<DtoRealizarVoto> votar(@RequestBody
                                                  @Valid DtoRealizarVoto dtoRealizarVoto) {
         var response = pautaService.votar(dtoRealizarVoto);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

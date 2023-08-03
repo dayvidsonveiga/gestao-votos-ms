@@ -1,5 +1,6 @@
 package br.com.gestao.gestaovotosms.controller;
 
+import br.com.gestao.gestaovotosms.contract.AssociadoContract;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoCriarAssociado;
 import br.com.gestao.gestaovotosms.service.AssociadoService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Validated
 @RequiredArgsConstructor
-public class AssociadoController {
+public class AssociadoController implements AssociadoContract {
 
     private final AssociadoService associadoService;
 
