@@ -1,5 +1,6 @@
 package br.com.gestao.gestaovotosms.controller;
 
+import br.com.gestao.gestaovotosms.dto.entrada.DtoAbrirSessao;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoCriarPauta;
 import br.com.gestao.gestaovotosms.service.PautaService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,13 @@ public class PautaController {
     public ResponseEntity<DtoCriarPauta> criar(@RequestBody
                                                @Valid DtoCriarPauta dtoPauta) {
         var response = pautaService.criar(dtoPauta);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/v1/pauta/abrir-sessao")
+    public ResponseEntity<DtoAbrirSessao> abrirSessao(@RequestBody
+                                                      @Valid DtoAbrirSessao dtoAbrirSessao) {
+        var response = pautaService.abrirSessao(dtoAbrirSessao);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
