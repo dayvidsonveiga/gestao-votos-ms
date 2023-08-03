@@ -68,6 +68,7 @@ public class AssociadoService {
 
         return Associado.builder()
                 .cpf(dtoAssociado.getCpf())
+                .nome(dtoAssociado.getNome())
                 .build();
 
     }

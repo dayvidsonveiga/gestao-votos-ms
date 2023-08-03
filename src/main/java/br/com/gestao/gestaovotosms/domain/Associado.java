@@ -28,4 +28,8 @@ public class Associado {
     @Column(name = "cpf")
     private String cpf;
 
+    @NotNull
+    @Column(name = "nome")
+    private String nome;
+
 }
