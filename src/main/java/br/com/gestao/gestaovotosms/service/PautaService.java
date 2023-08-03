@@ -1,8 +1,11 @@
 package br.com.gestao.gestaovotosms.service;
 
+import br.com.gestao.gestaovotosms.domain.Associado;
 import br.com.gestao.gestaovotosms.domain.Pauta;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoAbrirSessao;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoCriarPauta;
+import br.com.gestao.gestaovotosms.dto.entrada.DtoRealizarVoto;
+import br.com.gestao.gestaovotosms.enumerated.TipoVotoEnum;
 import br.com.gestao.gestaovotosms.exception.CadastroDuplicadoException;
 import br.com.gestao.gestaovotosms.exception.CadastroNaoEncontradoException;
 import br.com.gestao.gestaovotosms.exception.RegraDeNegocioSessaoException;
@@ -78,6 +81,31 @@ public class PautaService {
 
     }
 
+    public DtoRealizarVoto votar(DtoRealizarVoto dtoVoto) {
+
+        log.info("Cadastrando voto para pauta {}.", dtoVoto.getTituloPauta());
+
+        var pauta = encontrarPautaPorTitulo(dtoVoto.getTituloPauta());
+
+        if (verificarSessaoVotavel(pauta)) {
+
+            var associado = associadoService.encontrarAssociadoPorCpf(dtoVoto.getCpf());
+
+            verificarSeAssociadoJaVotou(pauta, associado);
+            atualizarVoto(pauta, associado, dtoVoto);
+
+        } else {
+            var msg = "A pauta " + dtoVoto.getTituloPauta() + " não possui sessão aberta.";
+            log.error(msg);
+            throw new RegraDeNegocioSessaoException(msg);
+        }
+
+        log.info("Voto cadastrado.");
+
+        return dtoVoto;
+
+    }
+
     private Pauta encontrarPautaPorTitulo(String titulo) {
 
         return pautaRepository.findByTituloIgnoreCase(titulo)
@@ -107,6 +135,45 @@ public class PautaService {
             log.error(msg);
             throw new RegraDeNegocioSessaoException(msg);
         }
+
+    }
+
+    private boolean verificarSessaoVotavel(Pauta pauta) {
+
+        var votavel = false;
+        var horaAtual = LocalDateTime.now();
+
+        if (Objects.nonNull(pauta.getDataFechamento()) &&
+                pauta.getDataFechamento().isAfter(horaAtual)) {
+
+            votavel = true;
+        }
+
+        return votavel;
+
+    }
+
+    private void verificarSeAssociadoJaVotou(Pauta pauta, Associado associado) {
+
+        if (pauta.getAssociados().contains(associado)) {
+            var msg = "O associado de cpf " + associado.getCpf() + " já realizou voto na pauta " + pauta.getTitulo();
+            log.error(msg);
+            throw new RegraDeNegocioSessaoException(msg);
+        }
+
+    }
+
+    private void atualizarVoto(Pauta pauta, Associado associado, DtoRealizarVoto dtoVoto) {
+
+        pauta.getAssociados().add(associado);
+
+        if (dtoVoto.getVoto().equalsIgnoreCase(TipoVotoEnum.SIM.name())) {
+            pauta.setQtdeVotosSim(pauta.getQtdeVotosSim() != null ? pauta.getQtdeVotosSim() + 1L : 1L);
+        } else {
+            pauta.setQtdeVotosNao(pauta.getQtdeVotosNao() != null ? pauta.getQtdeVotosNao() + 1L : 1L);
+        }
+
+        pautaRepository.save(pauta);
 
     }
 

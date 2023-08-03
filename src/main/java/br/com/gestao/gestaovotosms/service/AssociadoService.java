@@ -3,6 +3,7 @@ package br.com.gestao.gestaovotosms.service;
 import br.com.gestao.gestaovotosms.domain.Associado;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoCriarAssociado;
 import br.com.gestao.gestaovotosms.exception.CadastroDuplicadoException;
+import br.com.gestao.gestaovotosms.exception.CadastroNaoEncontradoException;
 import br.com.gestao.gestaovotosms.repository.AssociadoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -38,6 +39,17 @@ public class AssociadoService {
         } catch (CadastroDuplicadoException e) {
             throw e;
         }
+
+    }
+
+    public Associado encontrarAssociadoPorCpf(String cpf) {
+
+        return associadoRepository.findByCpf(cpf)
+                .orElseThrow(() -> {
+                    var msg = "O cpf " + cpf + " informado não foi encontrado na base de dados.";
+                    log.error(msg);
+                    throw new CadastroNaoEncontradoException(msg);
+                });
 
     }
 

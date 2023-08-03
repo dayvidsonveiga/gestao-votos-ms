@@ -2,6 +2,7 @@ package br.com.gestao.gestaovotosms.controller;
 
 import br.com.gestao.gestaovotosms.dto.entrada.DtoAbrirSessao;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoCriarPauta;
+import br.com.gestao.gestaovotosms.dto.entrada.DtoRealizarVoto;
 import br.com.gestao.gestaovotosms.service.PautaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,13 @@ public class PautaController {
     public ResponseEntity<DtoAbrirSessao> abrirSessao(@RequestBody
                                                       @Valid DtoAbrirSessao dtoAbrirSessao) {
         var response = pautaService.abrirSessao(dtoAbrirSessao);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/v1/pauta/votar")
+    public ResponseEntity<DtoRealizarVoto> votar(@RequestBody
+                                                 @Valid DtoRealizarVoto dtoRealizarVoto) {
+        var response = pautaService.votar(dtoRealizarVoto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
