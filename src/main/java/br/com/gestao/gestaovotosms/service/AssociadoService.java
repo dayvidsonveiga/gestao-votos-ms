@@ -30,7 +30,7 @@ public class AssociadoService {
 
             var associado = dtoParaAssociado(dtoAssociado);
 
-            associadoRepository.save(associado);
+            salvarAssociado(associado);
 
             log.info("Associado de cpf {} cadastrado com sucesso.", dtoAssociado.getCpf());
 
@@ -39,6 +39,12 @@ public class AssociadoService {
         } catch (CadastroDuplicadoException e) {
             throw e;
         }
+
+    }
+
+    public Associado salvarAssociado(Associado associado) {
+
+        return associadoRepository.save(associado);
 
     }
 

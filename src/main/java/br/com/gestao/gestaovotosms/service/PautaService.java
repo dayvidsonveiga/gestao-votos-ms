@@ -71,7 +71,7 @@ public class PautaService {
                 dtoSessao.setTempoSessaoEmMinutos(tempoSessaoPadrao);
             }
 
-            pautaRepository.save(pauta);
+            salvarPauta(pauta);
 
             return dtoSessao;
 
@@ -103,6 +103,12 @@ public class PautaService {
         log.info("Voto cadastrado.");
 
         return dtoVoto;
+
+    }
+
+    private Pauta salvarPauta(Pauta pauta) {
+
+        return pautaRepository.save(pauta);
 
     }
 
@@ -173,7 +179,10 @@ public class PautaService {
             pauta.setQtdeVotosNao(pauta.getQtdeVotosNao() != null ? pauta.getQtdeVotosNao() + 1L : 1L);
         }
 
-        pautaRepository.save(pauta);
+        associado.setPauta(pauta);
+        associadoService.salvarAssociado(associado);
+
+        salvarPauta(pauta);
 
     }
 

@@ -42,7 +42,7 @@ public class Pauta {
     @Column(name = "qtde_votos_nao")
     private Long qtdeVotosNao;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pauta")
     private Set<Associado> associados;
 
 }

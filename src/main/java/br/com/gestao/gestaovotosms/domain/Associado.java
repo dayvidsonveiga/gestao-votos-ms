@@ -32,4 +32,8 @@ public class Associado {
     @Column(name = "nome")
     private String nome;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pauta", referencedColumnName = "id_pauta")
+    private Pauta pauta;
+
 }
