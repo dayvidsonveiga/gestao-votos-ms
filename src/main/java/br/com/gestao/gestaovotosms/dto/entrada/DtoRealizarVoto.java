@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class DtoRealizarVoto {
 
     @CPF(message = "CPF inválido")
-    @NotBlank
+    @NotBlank(message = "O cpf deve ser preenchido.")
     @Schema(description = "Número do cpf válido, somente números", example = "32976406006", required = true)
     private String cpf;
 
