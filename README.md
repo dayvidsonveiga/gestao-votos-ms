@@ -31,7 +31,10 @@ Desafio desenvolvido para integrar o time de desenvolvimento da [NTConsult](http
 - Execute o arquivo com a classe main GestaoVotosMsApplication.java
 
 - Acesse a interface dos recursos do backend através do swagger usando o endereço local http://localhost:8080
-
+- Para verificar as mensagens publicas no RabbitMQ acesse o endereço local http://localhost:15672 realize o login com usuario: guest e senha: guest
+  - Vá para aba Queues and Streams
+  - Selecione a fila subscription-pauta.routing-key
+  - Va em Get messages e selecione Get Message(s)
 
 # Rotas
 ## Associado Controller
