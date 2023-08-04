@@ -1,10 +1,11 @@
 package br.com.gestao.gestaovotosms.service;
 
 import br.com.gestao.gestaovotosms.domain.Associado;
-import br.com.gestao.gestaovotosms.dto.entrada.DtoCriarAssociado;
 import br.com.gestao.gestaovotosms.exception.CadastroDuplicadoException;
 import br.com.gestao.gestaovotosms.exception.CadastroNaoEncontradoException;
 import br.com.gestao.gestaovotosms.repository.AssociadoRepository;
+import br.com.gestao.gestaovotosms.util.MockAssociadoBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,7 +13,6 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -28,11 +28,20 @@ class AssociadoServiceTest {
     @Mock
     private AssociadoRepository associadoRepository;
 
+    private MockAssociadoBuilder mockAssociadoBuilder;
+
+    @BeforeEach
+    void setUp() {
+
+        mockAssociadoBuilder = new MockAssociadoBuilder();
+
+    }
+
 
     @Test
     void criarComSucesso() {
 
-        var entradaCadastro = mockDtoCriarAssociado("59042667079", "Dayvidson Veiga");
+        var entradaCadastro = mockAssociadoBuilder.mockDtoCriarAssociado("59042667079", "Dayvidson Veiga");
 
         when(associadoRepository.findByCpf(anyString())).thenReturn(Optional.empty());
 
@@ -47,8 +56,8 @@ class AssociadoServiceTest {
     @Test
     void criarAssociadoComCadastroDuplicadoException() {
 
-        var entradaCadastro = mockDtoCriarAssociado("12345678901", "Dayvidson Veiga");
-        var associadoExistente = mockAssociado(entradaCadastro.getCpf(), "Dayvidson Veiga");
+        var entradaCadastro = mockAssociadoBuilder.mockDtoCriarAssociado("12345678901", "Dayvidson Veiga");
+        var associadoExistente = mockAssociadoBuilder.mockAssociado(entradaCadastro.getCpf(), "Dayvidson Veiga");
 
         when(associadoRepository.findByCpf(entradaCadastro.getCpf())).thenReturn(Optional.of(associadoExistente));
 
@@ -61,7 +70,7 @@ class AssociadoServiceTest {
 
         var cpf = "12345678901";
 
-        var associado = mockAssociado("12345678901", "Dayvidson Veiga");
+        var associado = mockAssociadoBuilder.mockAssociado("12345678901", "Dayvidson Veiga");
 
         when(associadoRepository.findByCpf(cpf)).thenReturn(Optional.of(associado));
 
@@ -82,26 +91,6 @@ class AssociadoServiceTest {
         when(associadoRepository.findByCpf(cpf)).thenReturn(Optional.empty());
 
         assertThrows(CadastroNaoEncontradoException.class, () -> associadoService.encontrarAssociadoPorCpf(cpf));
-
-    }
-
-    private DtoCriarAssociado mockDtoCriarAssociado(String cpf, String nome) {
-
-        var dtoCriarAssociado = new DtoCriarAssociado();
-        dtoCriarAssociado.setCpf(cpf);
-        dtoCriarAssociado.setNome(nome);
-
-        return dtoCriarAssociado;
-
-    }
-
-    private Associado mockAssociado(String cpf, String nome) {
-
-        return Associado.builder()
-                .id(UUID.randomUUID())
-                .cpf(cpf)
-                .nome(nome)
-                .build();
 
     }
 
