@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 @Data
@@ -16,6 +17,7 @@ public class DtoAbrirSessao {
     private String tituloPauta;
 
     @Min(1)
+    @Null
     @Schema(description = "Valor inteiro que será o tempo em minutos que a sessão permanecera aberta", example = "10")
     private Long tempoSessaoEmMinutos;
 
