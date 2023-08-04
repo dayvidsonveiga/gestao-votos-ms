@@ -9,7 +9,22 @@ services:
     restart: always
     ports:
       - "3306:3306"
+    networks:
+      - gestao-network
     environment:
       MYSQL_DATABASE: eleicao
       MYSQL_ROOT_PASSWORD:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'subscription-rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - gestao-network
+
+networks:
+  gestao-network:
+    driver: bridge

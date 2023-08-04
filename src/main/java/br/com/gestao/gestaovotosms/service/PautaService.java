@@ -27,6 +27,7 @@ public class PautaService {
 
     private final PautaRepository pautaRepository;
     private final AssociadoService associadoService;
+    private final NotificacaoService notificacaoService;
 
 
     public DtoCriarPauta criar(DtoCriarPauta dtoPauta) {
@@ -126,7 +127,11 @@ public class PautaService {
 
             log.info("Consulta pauta {} concluida.", dtoPauta.getTitulo());
 
-            return pautaParaDtoResultadoVotacao(pauta);
+            var resultado = pautaParaDtoResultadoVotacao(pauta);
+
+            notificacaoService.sendMessage(resultado);
+
+            return resultado;
 
         } catch (RegraDeNegocioSessaoException e) {
             throw e;

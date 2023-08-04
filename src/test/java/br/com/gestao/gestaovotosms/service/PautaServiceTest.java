@@ -32,6 +32,9 @@ class PautaServiceTest {
     private PautaRepository pautaRepository;
 
     @Mock
+    private NotificacaoService notificacaoService;
+
+    @Mock
     private AssociadoService associadoService;
 
     private MockAssociadoBuilder mockAssociadoBuilder;
@@ -245,6 +248,7 @@ class PautaServiceTest {
         assertEquals(votosSim + votosNao, resultado.getTotalVotosRealizados());
         assertFalse(resultado.getAprovada());
         verify(pautaRepository, times(1)).findByTituloIgnoreCase(dtoPauta.getTitulo());
+        verify(notificacaoService, times(1)).sendMessage(resultado);
 
     }
 
