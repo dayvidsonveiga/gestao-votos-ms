@@ -136,7 +136,7 @@ public class PautaService {
 
     private void verificarSeSessaoPautaJaAberta(Pauta pauta) {
 
-        if (Objects.nonNull(pauta.getDataAbertura()) && Objects.isNull(pauta.getDataFechamento())) {
+        if (verificarSessaoVotavel(pauta)) {
             var msg = "A pauta " + pauta.getTitulo() + " já esta aberta.";
             log.error(msg);
             throw new RegraDeNegocioSessaoException(msg);
@@ -178,9 +178,6 @@ public class PautaService {
         } else {
             pauta.setQtdeVotosNao(pauta.getQtdeVotosNao() != null ? pauta.getQtdeVotosNao() + 1L : 1L);
         }
-
-        associado.setPauta(pauta);
-        associadoService.salvarAssociado(associado);
 
         salvarPauta(pauta);
 
