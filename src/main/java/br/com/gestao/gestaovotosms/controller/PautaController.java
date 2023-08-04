@@ -4,11 +4,13 @@ import br.com.gestao.gestaovotosms.contract.PautaContract;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoAbrirSessao;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoCriarPauta;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoRealizarVoto;
+import br.com.gestao.gestaovotosms.dto.retorno.DtoResultadoVotacao;
 import br.com.gestao.gestaovotosms.service.PautaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +42,13 @@ public class PautaController implements PautaContract {
     public ResponseEntity<DtoRealizarVoto> votar(@RequestBody
                                                  @Valid DtoRealizarVoto dtoRealizarVoto) {
         var response = pautaService.votar(dtoRealizarVoto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/v1/pauta/consultar-resultado")
+    public ResponseEntity<DtoResultadoVotacao> consultarResultado(@RequestBody
+                                                                  @Valid DtoCriarPauta dto) {
+        var response = pautaService.consultarResultado(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

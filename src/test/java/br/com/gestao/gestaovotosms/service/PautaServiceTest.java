@@ -19,8 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -67,7 +66,7 @@ class PautaServiceTest {
     public void criarComPautaDuplicada() {
 
         var dtoCriarPauta = mockPautaBuilder.mockDtoCriarPauta("Implementacao de IAs");
-        var pautaExistente = mockPautaBuilder.mockPauta(dtoCriarPauta.getTitulo(), false, null, false);
+        var pautaExistente = mockPautaBuilder.mockPauta(dtoCriarPauta.getTitulo(), 1L, 1L, false, null, false);
 
         when(pautaRepository.findByTituloIgnoreCase(dtoCriarPauta.getTitulo())).thenReturn(Optional.of(pautaExistente));
 
@@ -80,7 +79,7 @@ class PautaServiceTest {
     public void abrirSessaoComSucessoComTempoInformado() {
 
         var dtoAbrirSessao = mockPautaBuilder.mockDtoAbrirSessao("Implementacao de IAs", 1L);
-        var pauta = mockPautaBuilder.mockPauta(dtoAbrirSessao.getTituloPauta(), false, null, false);
+        var pauta = mockPautaBuilder.mockPauta(dtoAbrirSessao.getTituloPauta(), 1L, 1L, false, null, false);
 
         when(pautaRepository.findByTituloIgnoreCase(dtoAbrirSessao.getTituloPauta())).thenReturn(Optional.of(pauta));
 
@@ -96,7 +95,7 @@ class PautaServiceTest {
     public void abrirSessaoComSucessoComTempoNaoInformado() {
 
         var dtoAbrirSessao = mockPautaBuilder.mockDtoAbrirSessao("Implementacao de IAs", null);
-        var pauta = mockPautaBuilder.mockPauta(dtoAbrirSessao.getTituloPauta(), false, null, false);
+        var pauta = mockPautaBuilder.mockPauta(dtoAbrirSessao.getTituloPauta(), 1L, 1L, false, null, false);
 
         when(pautaRepository.findByTituloIgnoreCase(dtoAbrirSessao.getTituloPauta())).thenReturn(Optional.of(pauta));
 
@@ -124,7 +123,7 @@ class PautaServiceTest {
     public void abrirSessaoComSessaoPautaJaAberta() {
 
         var dtoAbrirSessao = mockPautaBuilder.mockDtoAbrirSessao("Implementacao de IAs", 1L);
-        var pauta = mockPautaBuilder.mockPauta(dtoAbrirSessao.getTituloPauta(), true, null, false);
+        var pauta = mockPautaBuilder.mockPauta(dtoAbrirSessao.getTituloPauta(), 1L, 1L, true, null, false);
 
         when(pautaRepository.findByTituloIgnoreCase(dtoAbrirSessao.getTituloPauta())).thenReturn(Optional.ofNullable(pauta));
 
@@ -139,7 +138,7 @@ class PautaServiceTest {
 
         var dtoRealizarVoto = mockPautaBuilder.mockDtoRealizarVoto("12345678901", "Implementacao de IAs", TipoVotoEnum.SIM.name());
         var associado = mockAssociadoBuilder.mockAssociado(dtoRealizarVoto.getCpf(), "Teste");
-        var pauta = mockPautaBuilder.mockPauta(dtoRealizarVoto.getTituloPauta(), true, associado, false);
+        var pauta = mockPautaBuilder.mockPauta(dtoRealizarVoto.getTituloPauta(), 1L, 1L, true, associado, false);
 
         when(pautaRepository.findByTituloIgnoreCase(dtoRealizarVoto.getTituloPauta())).thenReturn(Optional.of(pauta));
         when(associadoService.encontrarAssociadoPorCpf(dtoRealizarVoto.getCpf())).thenReturn(associado);
@@ -157,7 +156,7 @@ class PautaServiceTest {
 
         var dtoRealizarVoto = mockPautaBuilder.mockDtoRealizarVoto("12345678901", "Implementacao de IAs", TipoVotoEnum.NAO.name());
         var associado = mockAssociadoBuilder.mockAssociado(dtoRealizarVoto.getCpf(), "Teste");
-        var pauta = mockPautaBuilder.mockPauta(dtoRealizarVoto.getTituloPauta(), true, associado, false);
+        var pauta = mockPautaBuilder.mockPauta(dtoRealizarVoto.getTituloPauta(), 1L, 1L, true, associado, false);
 
         when(pautaRepository.findByTituloIgnoreCase(dtoRealizarVoto.getTituloPauta())).thenReturn(Optional.of(pauta));
         when(associadoService.encontrarAssociadoPorCpf(dtoRealizarVoto.getCpf())).thenReturn(associado);
@@ -175,7 +174,7 @@ class PautaServiceTest {
 
         var dtoRealizarVoto = mockPautaBuilder.mockDtoRealizarVoto("12345678901", "Implementacao de IAs", TipoVotoEnum.SIM.name());
         var associado = mockAssociadoBuilder.mockAssociado(dtoRealizarVoto.getCpf(), "Teste");
-        var pauta = mockPautaBuilder.mockPauta(dtoRealizarVoto.getTituloPauta(), false, associado, true);
+        var pauta = mockPautaBuilder.mockPauta(dtoRealizarVoto.getTituloPauta(), 1L, 1L, false, associado, true);
 
         when(pautaRepository.findByTituloIgnoreCase(dtoRealizarVoto.getTituloPauta())).thenReturn(Optional.of(pauta));
 
@@ -191,7 +190,7 @@ class PautaServiceTest {
 
         var dtoRealizarVoto = mockPautaBuilder.mockDtoRealizarVoto("12345678901", "Implementacao de IAs", TipoVotoEnum.SIM.name());
         var associado = mockAssociadoBuilder.mockAssociado(dtoRealizarVoto.getCpf(), "Teste");
-        var pauta = mockPautaBuilder.mockPauta(dtoRealizarVoto.getTituloPauta(), true, associado, true);
+        var pauta = mockPautaBuilder.mockPauta(dtoRealizarVoto.getTituloPauta(), 1L, 1L, true, associado, true);
 
         when(pautaRepository.findByTituloIgnoreCase(dtoRealizarVoto.getTituloPauta())).thenReturn(Optional.of(pauta));
         when(associadoService.encontrarAssociadoPorCpf(dtoRealizarVoto.getCpf())).thenReturn(associado);
@@ -200,6 +199,65 @@ class PautaServiceTest {
 
         verify(associadoService, never()).salvarAssociado(any(Associado.class));
         verify(pautaRepository, never()).save(any(Pauta.class));
+
+    }
+
+    @Test
+    void consultarResultadoPautaAprovadaComSucesso() {
+
+        var dtoPauta = mockPautaBuilder.mockDtoCriarPauta("Implementacao de IAs");
+        var votosSim = 10L;
+        var votosNao = 5L;
+        var pauta = mockPautaBuilder.mockPauta(dtoPauta.getTitulo(), votosSim, votosNao, false,
+                null, false);
+
+        when(pautaRepository.findByTituloIgnoreCase(dtoPauta.getTitulo())).thenReturn(Optional.of(pauta));
+
+        var resultado = pautaService.consultarResultado(dtoPauta);
+
+        assertNotNull(resultado);
+        assertEquals(dtoPauta.getTitulo(), resultado.getTitulo());
+        assertEquals(votosSim, resultado.getQuantidadeVotosSim());
+        assertEquals(votosNao, resultado.getQuantidadeVotosNao());
+        assertEquals(votosSim + votosNao, resultado.getTotalVotosRealizados());
+        assertTrue(resultado.getAprovada());
+        verify(pautaRepository, times(1)).findByTituloIgnoreCase(dtoPauta.getTitulo());
+
+    }
+
+    @Test
+    void consultarResultadoPautaReprovadaComSucesso() {
+
+        var dtoPauta = mockPautaBuilder.mockDtoCriarPauta("Implementacao de IAs");
+        var votosSim = 5L;
+        var votosNao = 10L;
+        var pauta = mockPautaBuilder.mockPauta(dtoPauta.getTitulo(), votosSim, votosNao, false,
+                null, false);
+
+        when(pautaRepository.findByTituloIgnoreCase(dtoPauta.getTitulo())).thenReturn(Optional.of(pauta));
+
+        var resultado = pautaService.consultarResultado(dtoPauta);
+
+        assertNotNull(resultado);
+        assertEquals(dtoPauta.getTitulo(), resultado.getTitulo());
+        assertEquals(votosSim, resultado.getQuantidadeVotosSim());
+        assertEquals(votosNao, resultado.getQuantidadeVotosNao());
+        assertEquals(votosSim + votosNao, resultado.getTotalVotosRealizados());
+        assertFalse(resultado.getAprovada());
+        verify(pautaRepository, times(1)).findByTituloIgnoreCase(dtoPauta.getTitulo());
+
+    }
+
+    @Test
+    public void consultarResultadoPautaComPautaAberta() {
+
+        var dtoPauta = mockPautaBuilder.mockDtoCriarPauta("Implementacao de IAs");
+
+        var pauta = mockPautaBuilder.mockPauta(dtoPauta.getTitulo(), 1L, 1L, true, null, false);
+
+        when(pautaRepository.findByTituloIgnoreCase(dtoPauta.getTitulo())).thenReturn(Optional.of(pauta));
+
+        assertThrows(RegraDeNegocioSessaoException.class, () -> pautaService.consultarResultado(dtoPauta));
 
     }
 

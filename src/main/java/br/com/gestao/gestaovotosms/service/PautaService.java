@@ -5,6 +5,7 @@ import br.com.gestao.gestaovotosms.domain.Pauta;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoAbrirSessao;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoCriarPauta;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoRealizarVoto;
+import br.com.gestao.gestaovotosms.dto.retorno.DtoResultadoVotacao;
 import br.com.gestao.gestaovotosms.enumerated.TipoVotoEnum;
 import br.com.gestao.gestaovotosms.exception.CadastroDuplicadoException;
 import br.com.gestao.gestaovotosms.exception.CadastroNaoEncontradoException;
@@ -106,6 +107,33 @@ public class PautaService {
 
     }
 
+    public DtoResultadoVotacao consultarResultado(DtoCriarPauta dtoPauta) {
+
+        log.info("Consultando pauta {} ...", dtoPauta.getTitulo());
+
+        try {
+
+            var pauta = encontrarPautaPorTitulo(dtoPauta.getTitulo());
+
+            if (verificarSessaoVotavel(pauta) ||
+                    pauta.getQtdeVotosSim() == 0 && pauta.getQtdeVotosNao() == 0) {
+
+                var msg = "A pauta " + pauta.getTitulo() + " ainda esta aberta ou não inicializou uma votação.";
+                log.error(msg);
+                throw new RegraDeNegocioSessaoException(msg);
+
+            }
+
+            log.info("Consulta pauta {} concluida.", dtoPauta.getTitulo());
+
+            return pautaParaDtoResultadoVotacao(pauta);
+
+        } catch (RegraDeNegocioSessaoException e) {
+            throw e;
+        }
+
+    }
+
     private Pauta salvarPauta(Pauta pauta) {
 
         return pautaRepository.save(pauta);
@@ -190,6 +218,19 @@ public class PautaService {
                 .qtdeVotosSim(0L)
                 .qtdeVotosNao(0L)
                 .build();
+
+    }
+
+    private DtoResultadoVotacao pautaParaDtoResultadoVotacao(Pauta pauta) {
+
+        var resultadoVotacao = new DtoResultadoVotacao();
+        resultadoVotacao.setTitulo(pauta.getTitulo());
+        resultadoVotacao.setQuantidadeVotosSim(pauta.getQtdeVotosSim());
+        resultadoVotacao.setQuantidadeVotosNao(pauta.getQtdeVotosNao());
+        resultadoVotacao.setTotalVotosRealizados(pauta.getQtdeVotosSim() + pauta.getQtdeVotosNao());
+        resultadoVotacao.setAprovada(pauta.getQtdeVotosSim() > pauta.getQtdeVotosNao());
+
+        return resultadoVotacao;
 
     }
 

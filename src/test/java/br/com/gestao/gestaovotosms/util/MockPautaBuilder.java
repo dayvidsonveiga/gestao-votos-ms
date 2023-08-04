@@ -21,13 +21,13 @@ public class MockPautaBuilder {
 
     }
 
-    public Pauta mockPauta(String titulo, Boolean sessaoAberta, Associado associado, Boolean jaVotou) {
+    public Pauta mockPauta(String titulo, Long qtdeVotosSim, Long qtdeVotosNao, Boolean sessaoAberta, Associado associado, Boolean jaVotou) {
 
         var pauta = Pauta.builder()
                 .id(UUID.randomUUID())
                 .titulo(titulo)
-                .qtdeVotosSim(1L)
-                .qtdeVotosNao(1L)
+                .qtdeVotosSim(qtdeVotosSim)
+                .qtdeVotosNao(qtdeVotosNao)
                 .associados(new HashSet<>())
                 .dataAbertura(LocalDateTime.now())
                 .build();
