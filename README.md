@@ -44,9 +44,21 @@ Desafio desenvolvido para integrar o time de desenvolvimento da [NTConsult](http
 
 
 ## Pauta Controller
-| Método  | Path  | Descrição  |
-| ------------ | ------------ | ------------ |
-| POST  |  /v1/pauta | Cria uma nova pauta |
-| POST  |  /v1/pauta/votar | Votar em uma pauta |
-| POST  |  /v1/pauta/abrir | Abrir sessão para votação da pauta |
-| POST  |  /v1/pauta/consultar-resultado | Consultar resultado da votação da pauta |
+| Método | Path                          | Descrição  |
+|--------|-------------------------------| ------------ |
+| POST   | /v1/pauta                     | Cria uma nova pauta |
+| POST   | /v1/pauta/votar               | Votar em uma pauta |
+| POST   | /v1/pauta/abrir               | Abrir sessão para votação da pauta |
+| GET    | /v1/pauta/consultar-resultado | Consultar resultado da votação da pauta |
+| GET    | /v1/pauta/listar              | Consultar todas as pautas cadastradas |
+
+
+## Planos para as próximas versões do serviço
+
+  - Implementação do [Spring WebFlux](https://docs.spring.io/spring-framework/reference/web/webflux.html) a fim de tornar a api reativa, dessa forma obtendo mais performance para cenários de grandes cargas
+  - Melhor tratamento das exeções. Criando uma base de dados para logs de erros serem salvos e assim obter melhor rastreabilidade e monitoramento
+  - Cruds completos
+
+## Observação sobre o desafio
+
+  - Não foi implementado a tarefa bônus 1 devido o serviço no Heroku não esta mais online.
