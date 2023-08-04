@@ -20,7 +20,7 @@ public class Associado {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "id_associado", columnDefinition = "VARCHAR(36)")
+    @Column(name = "id", columnDefinition = "VARCHAR(36)")
     @Type(type = "uuid-char")
     private UUID id;
 
@@ -31,9 +31,5 @@ public class Associado {
     @NotNull
     @Column(name = "nome")
     private String nome;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_pauta", referencedColumnName = "id_pauta")
-    private Pauta pauta;
 
 }
