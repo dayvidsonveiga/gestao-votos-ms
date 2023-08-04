@@ -58,6 +58,7 @@ Desafio desenvolvido para integrar o time de desenvolvimento da [NTConsult](http
   - Implementação do [Spring WebFlux](https://docs.spring.io/spring-framework/reference/web/webflux.html) a fim de tornar a api reativa, dessa forma obtendo mais performance para cenários de grandes cargas
   - Melhor tratamento das exeções. Criando uma base de dados para logs de erros serem salvos e assim obter melhor rastreabilidade e monitoramento
   - Cruds completos
+  - Testes de integração
 
 ## Observação sobre o desafio
 
