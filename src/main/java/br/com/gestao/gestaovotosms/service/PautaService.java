@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -139,6 +141,31 @@ public class PautaService {
 
     }
 
+    public List<DtoCriarPauta> listar() {
+        log.info("Consultando todas as pautas...");
+
+        try {
+
+            var pautas = pautaRepository.findAll();
+
+            if (pautas.isEmpty()) {
+
+                var msg = "Não há pauta cadastrada";
+                log.error(msg);
+                throw new CadastroNaoEncontradoException(msg);
+
+            }
+
+            return pautas.stream()
+                    .map(this::pautaParaDtoCriarPauta)
+                    .collect(Collectors.toList());
+
+        } catch (CadastroNaoEncontradoException e) {
+            throw e;
+        }
+
+    }
+
     private Pauta salvarPauta(Pauta pauta) {
 
         return pautaRepository.save(pauta);
@@ -223,6 +250,14 @@ public class PautaService {
                 .qtdeVotosSim(0L)
                 .qtdeVotosNao(0L)
                 .build();
+
+    }
+
+    private DtoCriarPauta pautaParaDtoCriarPauta(Pauta pauta) {
+
+        var dto = new DtoCriarPauta();
+        dto.setTitulo(pauta.getTitulo());
+        return dto;
 
     }
 

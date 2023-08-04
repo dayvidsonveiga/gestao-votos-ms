@@ -5,6 +5,7 @@ import br.com.gestao.gestaovotosms.domain.Pauta;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoAbrirSessao;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoCriarPauta;
 import br.com.gestao.gestaovotosms.dto.entrada.DtoRealizarVoto;
+import br.com.gestao.gestaovotosms.dto.retorno.DtoResultadoVotacao;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -65,6 +66,18 @@ public class MockPautaBuilder {
 
         return dtoRealizarVoto;
 
+    }
+
+    public DtoResultadoVotacao mockDtoResultadoVotacao(String titulo, Long votosSim, Long votosNao, Boolean aprovada) {
+
+        var dtoResultado = new DtoResultadoVotacao();
+        dtoResultado.setTitulo(titulo);
+        dtoResultado.setQuantidadeVotosSim(votosSim);
+        dtoResultado.setQuantidadeVotosNao(votosNao);
+        dtoResultado.setTotalVotosRealizados(votosSim + votosNao);
+        dtoResultado.setAprovada(aprovada);
+
+        return dtoResultado;
     }
 
 }

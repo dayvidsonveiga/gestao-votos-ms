@@ -17,6 +17,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -262,6 +264,36 @@ class PautaServiceTest {
         when(pautaRepository.findByTituloIgnoreCase(dtoPauta.getTitulo())).thenReturn(Optional.of(pauta));
 
         assertThrows(RegraDeNegocioSessaoException.class, () -> pautaService.consultarResultado(dtoPauta));
+
+    }
+
+    @Test
+    void listarComSucesso() {
+
+        var projeto1 = mockPautaBuilder.mockPauta("Projeto", 1L,
+                1L, false, null, false);
+        var projeto2 = mockPautaBuilder.mockPauta("Projeto2", 2L,
+                2L, false, null, false);
+        var listaDePautas = List.of(projeto1, projeto2);
+
+        when(pautaRepository.findAll()).thenReturn(listaDePautas);
+
+        var pautas = pautaService.listar();
+
+        assertFalse(pautas.isEmpty());
+        assertTrue(pautas.size() > 1);
+        assertEquals(projeto1.getTitulo(), pautas.get(0).getTitulo());
+        assertEquals(projeto2.getTitulo(), pautas.get(1).getTitulo());
+
+    }
+
+    @Test
+    void listarSemPautasCadastradas() {
+
+        when(pautaRepository.findAll()).thenReturn(Collections.emptyList());
+
+        assertThrows(CadastroNaoEncontradoException.class, () -> pautaService.listar());
+        verify(pautaRepository, times(1)).findAll();
 
     }
 

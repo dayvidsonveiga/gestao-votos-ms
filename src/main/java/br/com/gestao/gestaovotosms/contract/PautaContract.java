@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Tag(name = "2. Pauta", description = "Gerenciamento de pautas.")
 public interface PautaContract {
@@ -42,7 +43,6 @@ public interface PautaContract {
     })
     ResponseEntity<DtoRealizarVoto> votar(@RequestBody @Valid DtoRealizarVoto dtoRealizarVoto);
 
-
     @Operation(summary = "Consultar resultado da votação de uma pauta e postar mensagem na fila com resultado da pauta")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = DtoRealizarVoto.class))),
@@ -50,5 +50,13 @@ public interface PautaContract {
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = DtoRealizarVoto.class))),
     })
     ResponseEntity<DtoResultadoVotacao> consultarResultado(@RequestBody @Valid DtoCriarPauta dto);
+
+    @Operation(summary = "Consultar todas as pautas cadastradas")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = DtoRealizarVoto.class))),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = DtoRealizarVoto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = DtoRealizarVoto.class))),
+    })
+    ResponseEntity<List<DtoCriarPauta>> listar();
 
 }

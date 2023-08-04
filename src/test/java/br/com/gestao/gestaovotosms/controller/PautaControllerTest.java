@@ -12,6 +12,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -100,12 +103,30 @@ class PautaControllerTest {
     }
 
     @Test
-    void consultarVotacaoSemSucessoRetornaHttpStatusCode200() throws Exception {
+    void consultarVotacaoSemSucessoRetornaHttpStatusCode400() throws Exception {
         mockMvc.perform(get(BASE_URL + "/consultar-resultado")
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(mockPautaBuilder.mockDtoCriarPauta("T"))))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void listarComSucessoRetornaHttpStatusCode200() throws Exception {
+        mockMvc.perform(get(BASE_URL + "/listar")
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(mockPautaBuilder.mockDtoCriarPauta("Projeto")))))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void listarSemPautaCadastradaRetornaHttpStatusCode200() throws Exception {
+        mockMvc.perform(get(BASE_URL + "/listar")
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Collections.emptyList())))
+                .andExpect(status().isOk());
     }
 
 }

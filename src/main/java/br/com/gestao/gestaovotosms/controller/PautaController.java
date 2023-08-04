@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Validated
@@ -49,6 +50,12 @@ public class PautaController implements PautaContract {
     public ResponseEntity<DtoResultadoVotacao> consultarResultado(@RequestBody
                                                                   @Valid DtoCriarPauta dto) {
         var response = pautaService.consultarResultado(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/v1/pauta/listar")
+    public ResponseEntity<List<DtoCriarPauta>> listar() {
+        var response = pautaService.listar();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
